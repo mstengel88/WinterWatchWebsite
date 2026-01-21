@@ -4,32 +4,354 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>WinterWatch-Pro</title>
+  <meta name="description" content="A simple website with a photo gallery." />
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin: 2rem; line-height:1.5; color:#111 }
-    header { margin-bottom: 1.5rem }
-    a { color: #0366d6; text-decoration:none }
-    a:hover { text-decoration:underline }
-    .container { max-width: 800px; margin: 0 auto }
+    :root{
+      --bg:#0b0f17;
+      --card:#111827;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --accent:#60a5fa;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      line-height:1.5;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(96,165,250,.18), transparent 60%),
+                  radial-gradient(900px 500px at 90% 10%, rgba(167,139,250,.16), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .container{max-width:1100px; margin:0 auto; padding:24px}
+    header{
+      position:sticky; top:0;
+      backdrop-filter: blur(10px);
+      background: rgba(11,15,23,.6);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      z-index:10;
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
+      max-width:1100px; margin:0 auto; padding:14px 24px;
+    }
+    .brand{display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.2px}
+    .dot{width:10px; height:10px; border-radius:999px; background:var(--accent); box-shadow:0 0 0 6px rgba(96,165,250,.12)}
+    nav a{color:var(--text); opacity:.85; margin-left:14px}
+    nav a:hover{opacity:1}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
+      padding:28px 0 12px;
+    }
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr}
+      nav{display:none}
+    }
+    .card{
+      background: rgba(17,24,39,.72);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-copy{padding:26px}
+    .kicker{color:var(--muted); font-weight:600; letter-spacing:.12em; text-transform:uppercase; font-size:.78rem}
+    h1{margin:.5rem 0 0; font-size:2.25rem; line-height:1.15}
+    .sub{color:var(--muted); margin:10px 0 0; max-width:52ch}
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:650;
+    }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(96,165,250,.95), rgba(167,139,250,.9));
+      border: none;
+      color:#0b0f17;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn:active{transform: translateY(0px)}
+
+    .hero-media{
+      overflow:hidden;
+      position:relative;
+      min-height: 260px;
+    }
+    .hero-media img{
+      width:100%; height:100%; object-fit:cover; display:block;
+      transform: scale(1.02);
+      filter: contrast(1.05) saturate(1.05);
+    }
+    .badge{
+      position:absolute; left:14px; bottom:14px;
+      padding:8px 10px;
+      border-radius: 999px;
+      background: rgba(11,15,23,.7);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      font-size:.9rem;
+    }
+
+    section{margin-top:26px}
+    .section-title{
+      display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+      margin: 10px 0 12px;
+    }
+    .section-title h2{margin:0; font-size:1.35rem}
+    .section-title p{margin:0; color:var(--muted); font-size:.95rem}
+
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 900px){
+      .gallery{grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 520px){
+      .gallery{grid-template-columns: 1fr}
+    }
+    figure{
+      margin:0;
+      overflow:hidden;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(17,24,39,.72);
+      box-shadow: var(--shadow);
+    }
+    figure img{
+      width:100%;
+      height: 220px;
+      object-fit: cover;
+      display:block;
+      transition: transform .25s ease;
+    }
+    figure:hover img{transform: scale(1.03)}
+    figcaption{
+      padding:10px 12px;
+      color: var(--muted);
+      font-size:.92rem;
+    }
+
+    .two-col{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 900px){ .two-col{grid-template-columns:1fr} }
+    .pad{padding:18px}
+    .muted{color:var(--muted)}
+    footer{
+      margin:28px 0 14px;
+      color:var(--muted);
+      font-size:.9rem;
+      text-align:center;
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      font-size:.9rem;
+    }
+    .list{padding-left:18px; margin:10px 0 0}
+    .list li{margin:6px 0}
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>WinterWatch‑Pro</h1>
-      <p>Welcome — bookmark this to keep an eye on project updates.</p>
-    </header>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>WinterWatch-Pro</span>
+      </div>
+      <nav>
+        <a href="#gallery">Photos</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+      </nav>
+    </div>
+  </header>
 
-    <section>
-      <h2>Quick Links</h2>
-      <ul>
-        <li><a href="https://www.winterwatch-pro.com/privacy">Privacy</a></li>
-      </ul>
+  <main class="container">
+    <div class="hero">
+      <div class="card hero-copy">
+        <div class="kicker">Simple site + photo gallery</div>
+        <h1>Welcome to WinterWatch-Pro</h1>
+        <p class="sub">
+          A clean one-page site you can deploy anywhere. Swap in your own images and text.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#gallery">View Photos</a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+        <p class="muted" style="margin-top:14px">
+          Tip: put images in <code>images/</code> and keep filenames the same.
+        </p>
+      </div>
+
+      <div class="card hero-media" aria-label="Hero image">
+        <img src="images/hero.jpg" alt="Featured photo" />
+        <div class="badge">Your featured photo</div>
+      </div>
+    </div>
+
+    <section id="gallery">
+      <div class="section-title">
+        <h2>Photo Gallery</h2>
+        <p>Click images to open in a new tab.</p>
+      </div>
+
+      <div class="gallery">
+        <a href="images/plow.png" target="_blank" rel="noreferrer">
+          <figure>
+            <img src="images/plow.png" alt="Gallery photo 1" />
+            <figcaption>Photo 1 caption</figcaption>
+          </figure>
+        </a>
+
+        <a href="images/shovel.png" target="_blank" rel="noreferrer">
+          <figure>
+            <img src="images/shovel.png" alt="Gallery photo 2" />
+            <figcaption>Photo 2 caption</figcaption>
+          </figure>
+        </a>
+
+        <a href="images/photo3.jpg" target="_blank" rel="noreferrer">
+          <figure>
+            <img src="images/photo3.jpg" alt="Gallery photo 3" />
+            <figcaption>Photo 3 caption</figcaption>
+          </figure>
+        </a>
+
+        <a href="images/photo4.jpg" target="_blank" rel="noreferrer">
+          <figure>
+            <img src="images/photo4.jpg" alt="Gallery photo 4" />
+            <figcaption>Photo 4 caption</figcaption>
+          </figure>
+        </a>
+
+        <a href="images/photo5.jpg" target="_blank" rel="noreferrer">
+          <figure>
+            <img src="images/photo5.jpg" alt="Gallery photo 5" />
+            <figcaption>Photo 5 caption</figcaption>
+          </figure>
+        </a>
+
+        <a href="images/photo6.jpg" target="_blank" rel="noreferrer">
+          <figure>
+            <img src="images/photo6.jpg" alt="Gallery photo 6" />
+            <figcaption>Photo 6 caption</figcaption>
+          </figure>
+        </a>
+      </div>
     </section>
 
-    <section>
-      <h2>About</h2>
-      <p>Simple home page. Edit <code>index.html</code> to change this text.</p>
+    <section id="about">
+      <div class="section-title">
+        <h2>About</h2>
+        <p class="muted">Edit the text below to match your project.</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card pad">
+          <p class="pill">What this is</p>
+          <p style="margin-top:10px">
+            WinterWatch-Pro is a simple website template with a hero image and a responsive gallery.
+            You can host it on any static host (Cloudflare Pages, Netlify, GitHub Pages, etc.).
+          </p>
+          <ul class="list">
+            <li>Mobile friendly</li>
+            <li>Fast (no libraries)</li>
+            <li>Easy to customize</li>
+          </ul>
+        </div>
+
+        <div class="card pad">
+          <p class="pill">Folder structure</p>
+          <pre style="margin:10px 0 0; overflow:auto; color:var(--text);">
+your-site/
+  index.html
+  images/
+    hero.jpg
+    plow.png
+    shovel.png
+    photo3.jpg
+    photo4.jpg
+    photo5.jpg
+    photo6.jpg
+          </pre>
+          <p class="muted" style="margin:10px 0 0">
+            Replace the images with your own—keep the names, or update the <code>src</code> paths.
+          </p>
+        </div>
+      </div>
     </section>
-  </div>
+
+    <section id="contact">
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p class="muted">This form is “static” (no backend) but looks nice.</p>
+      </div>
+
+      <div class="card pad">
+        <p class="muted" style="margin-top:0">
+          If you want this form to actually send email, I can wire it to Formspree / Netlify Forms / a tiny API.
+        </p>
+
+        <form onsubmit="event.preventDefault(); alert('Thanks! (This demo form does not send yet.)');">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+            <label>
+              <div class="muted">Name</div>
+              <input required name="name" placeholder="Your name"
+                style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:var(--text)" />
+            </label>
+            <label>
+              <div class="muted">Email</div>
+              <input required type="email" name="email" placeholder="you@example.com"
+                style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:var(--text)" />
+            </label>
+          </div>
+
+          <label style="display:block; margin-top:12px">
+            <div class="muted">Message</div>
+            <textarea required name="message" rows="4" placeholder="What can I help with?"
+              style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:var(--text)"></textarea>
+          </label>
+
+          <button class="btn primary" type="submit" style="margin-top:12px">
+            Send message
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> WinterWatch-Pro · <a href="/privacy">Privacy</a>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
