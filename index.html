@@ -210,7 +210,7 @@
       </div>
 
       <div class="card hero-media" aria-label="Hero image">
-        <img src="images/hero.jpg" alt="Featured photo" />
+        <img src="images/plow.png" alt="Featured photo" />
         <div class="badge">Your featured photo</div>
       </div>
     </div>
@@ -289,59 +289,11 @@
         <div class="card pad">
           <p class="pill">Folder structure</p>
           <pre style="margin:10px 0 0; overflow:auto; color:var(--text);">
-your-site/
-  index.html
-  images/
-    hero.jpg
-    plow.png
-    shovel.png
-    photo3.jpg
-    photo4.jpg
-    photo5.jpg
-    photo6.jpg
           </pre>
           <p class="muted" style="margin:10px 0 0">
             Replace the images with your own—keep the names, or update the <code>src</code> paths.
           </p>
         </div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <div class="section-title">
-        <h2>Contact</h2>
-        <p class="muted">This form is “static” (no backend) but looks nice.</p>
-      </div>
-
-      <div class="card pad">
-        <p class="muted" style="margin-top:0">
-          If you want this form to actually send email, I can wire it to Formspree / Netlify Forms / a tiny API.
-        </p>
-
-        <form onsubmit="event.preventDefault(); alert('Thanks! (This demo form does not send yet.)');">
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
-            <label>
-              <div class="muted">Name</div>
-              <input required name="name" placeholder="Your name"
-                style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:var(--text)" />
-            </label>
-            <label>
-              <div class="muted">Email</div>
-              <input required type="email" name="email" placeholder="you@example.com"
-                style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:var(--text)" />
-            </label>
-          </div>
-
-          <label style="display:block; margin-top:12px">
-            <div class="muted">Message</div>
-            <textarea required name="message" rows="4" placeholder="What can I help with?"
-              style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:var(--text)"></textarea>
-          </label>
-
-          <button class="btn primary" type="submit" style="margin-top:12px">
-            Send message
-          </button>
-        </form>
       </div>
     </section>
 
